@@ -13,16 +13,16 @@
 $encrypt_or_decrypt = $decrypt_or_encrypt ? -1 : 1;
 # Deck is Ascii string !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUV
 $deck_of_cards = pack('C*', 33..86);
+# Set up code in strings for later
+$rotate_u_right =
+    '$deck_of_cards =~ s/(.*)U$/U$1/; $deck_of_cards =~ s/U(.)/$1U/;';
+($rotate_v_right = $rotate_u_right) =~ s/U/V/g;
 # Password from argv[1], get it, uppercase all lowercase, then use A-Zs only
 # for initial shuffle of above deck
 $password = shift;
 $password =~ y/a-z/A-Z/;
 $password =~ s/[A-Z]/$initial_shuffle_index = ord($&) - 64, &run_the_engine/eg;
 $initial_shuffle_index = 0;
-# Set up code in strings for later
-$rotate_u_right =
-    '$deck_of_cards =~ s/(.*)U$/U$1/; $deck_of_cards =~ s/U(.)/$1U/;';
-($rotate_v_right = $rotate_u_right) =~ s/U/V/g;
 #
 #
 # Process and report
