@@ -5,11 +5,11 @@
 #  Manual edit of $decrypt_or_encrypt > 0 means decrypt, otherwise encrypt
 #  echo 'plaintext' | ./pontifect.pl <password>
 #   or
-#  echo 'ciphertext' | ./pontifect.pl <password>
+#  echo 'ciphertext' | ./pontifect.pl -d <password>
 #
 #
 # Setup
-# $decrypt_or_encrypt = 1;
+$decrypt_or_encrypt = $d;
 $encrypt_or_decrypt = $decrypt_or_encrypt ? -1 : 1;
 # Deck is Ascii string !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUV
 $deck_of_cards = pack('C*', 33..86);
