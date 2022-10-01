@@ -681,6 +681,61 @@ encode binary with the A-Z limitation - see [Appendix A](#appendix-a) below for
 a solution from
 someone with zero cryptography background.
 
+## By-Hand Analysis #1
+
+The Appendix to Cryptonomicon contains a description and worked example of
+Solitaire using real playing cards - so I worked through this too, *after*
+having written the port above. This section is about that experience.
+
+It has not been obvious to me until now: the Solitaire system is wholly about
+generating the keystream: with the keystream developed by whatever method, one
+can use addition and modulo arithmetic to encrypt, and so use subtract and
+modulo arthmetic to decrypt. That makes Solitaire a black box for developing a
+keystream - I could swap it for a different method of developing a keystream
+without changing the other code. Pontifex was not written to be modular though,
+so giving effect to this observation would need something of a rewrite.
+
+The above observation became clear to me when I ran through the "Generating the
+Keystream Letters" section twice for different plaintext and discovered the
+keystream was identical both times.
+
+If a system is about developing a keystream, that does mean one can obtain a
+pre-computed keystream, and use that: one could take a particular copy of the
+Mona Lisa - say one at Wikipedia which tends to leave old copies available -
+and take the first N bytes for the keystream. If one is going to use a computer
+anyway, those first bytes could be used for the Solitaire password. Just out of
+interest, the [57Mb Mona Lisa at Wikipedia](
+https://upload.wikimedia.org/wikipedia/commons/b/b1/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF.jpg)
+has 146,455 bytes that match A-Z. Of course, I shan't do this - an adversary
+could well afford to download all the images and so quickly get all the
+keystreams; this is just me understanding that the keystream generation is
+separate from the encryption/decryption process.
+
+Next, I really found it useful to mark the cards with the ASCII character used
+and added a print statement for the "pack" at certain points: in this way I was
+able to compare and contrast my shuffling with what the program was doing - any
+divergence was my error. That done, I could comfortably repeat this with cards
+unmarked by ASCII.
+
+I also found it useful to mark the cards with the order = Ace of Diamonds being
+1, to King of Clubs being 52, with the two jokers both being 53. Were I to be a
+WW2 spy I would have to invest the time in learning the numbers by heart. But
+as a 2022 civvie, I'd shan't. As the next bit suggests, I could do a reasonable
+halfway house by creating a crib with a sheet of paper.
+
+What also worked for me is a paper crib: first to remind me of the suit order
+(DHSC), second to remind me of how the alphabet A-Z maps to 1-26 and 27-52,
+third to track the keystream generation and fourth to track the maths adding/
+subtracting and modulo to encrypt/decrypt. One sheet was enough for a short
+message. Were this wartime like in the book, I might burn that sheet following
+work.
+
+I've a second pack of, unmarked cards - I'll try with them too.
+
+
+
+
+
 ## Appendicies
 
 ### Appendix A
