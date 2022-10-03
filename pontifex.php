@@ -13,11 +13,14 @@
 
 // Setup
 
-$decrypt_or_encrypt = 1;
+$restindex = 1;
+$options = getopt("d", ["decrypt"], $restindex);
+$decrypt_or_encrypt = (isset($options["d"]) ||
+		       isset($options["decrypt"])) ? 1 : 0;
 $encrypt_or_decrypt = $decrypt_or_encrypt ? -1 : 1;
 // Password from argv[1], get it, uppercase all lowercase, then use A-Zs only
 // for initial shuffle of above deck
-$password = isset($argv[1]) ? $argv[1] : '';
+$password = isset($argv[$restindex]) ? $argv[$restindex] : '';
 $password = strtoupper($password);
 $deck_of_cards = "!\"#\$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUV";
 $deck_of_cards = initial_shuffle($deck_of_cards, $password);
