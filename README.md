@@ -715,7 +715,7 @@ Next, I really found it useful to mark the cards with the ASCII character used
 and added a print statement for the "pack" at certain points: in this way I was
 able to compare and contrast my shuffling with what the program was doing - any
 divergence was my error. That done, I could comfortably repeat this with cards
-unmarked by ASCII.
+unmarked by ASCII. See [Appendix B](#appendix-b).
 
 I also found it useful to mark the cards with the order = Ace of Diamonds being
 1, to King of Clubs being 52, with the two jokers both being 53. Were I to be a
@@ -732,9 +732,39 @@ work.
 
 I've a second pack of, unmarked cards - I'll try with them too.
 
+## By-Hand Analysis #2
 
+Once confident in my own ability to accurately handle developing the keystream
+with marked cards, it became obvious that my card markings were no longer of
+assistance. Indeed, Schneier specifically cautions that point. In fact, one
+could maintain a preprinted note of what cards have what card number.
 
+Preprinted notes are allowed for in the book - they get burnt after use. If they
+are allowed, we can also preprint other notes: I ran through a few more trials
+and developed the following cheat sheet:
 
+![Crib sheet completed with an encrypted then decrypted message](
+./workedcribsheet.jpg)
+
+*Crib* section very much abbreviates Schneier's instructions
+
+*Card numbering* enumerates which card of which suit has which number. Notice
+that both jokers have the same number. Also notice in top right "13 26 39 52" -
+I would check cards counted by recounting in groups of 13 - one could just as
+easily use groups of 10.
+
+*Arithmetic* has three roles:
+* Converting between letters A-Z and numbers 1-26 (2nd and 3rd rows)
+* Precomputed modulo 26 results for range -25 to +52 (Find on 1st and 4th
+    rows then look to answer on 2nd row)
+* Count-back. Instead of counting *forward* 50 cards one could count *back*
+    4 cards. (Find forward count on 4th row and so get backward count on 5th)
+
+*Working* section at bottom. I've filled this in with a simple message "EA",
+using a keystream developed with the password "B", and then decrypted the
+resulting ciphertext immediately to its right.
+
+The [original cribsheet is also part of this repo.](./solitaire-cribsheet.odt)
 
 ## Appendicies
 
@@ -777,6 +807,50 @@ according to the password, and adding occasional "A"s in - both ends know to
 ignore it, but an eavesdropper would have to work it out. Such complications
 would be for cryptographers to assess though.
 
+### Appendix B
+At one point above I marked a set of cards for learning how the real world use
+of Solitaire married with the programming. Here are some examples:
+![Cards marked for learning](./markedcards.jpg)
+
+* Each card is marked at or near bottom right with the Card Number 1-53, when
+the cards are in diamond/hearts/spaces/clubs and suit order. So, Ace of Diamonds
+is No 1, King of Hearts is No 26, and the King of Clubs is No. 52.
+* At or near the top left of each card is the ASCII symbol associated with
+(card number + 32). Eg, the 10 of Hearts has the card number 23, 23 + 32 = 55,
+and the ASCII code 55 is the character "7".
+* The jokers are slightly different.
+    * They divide according to the book into the "little" joker and the "big"
+    joker. I've taken that here to be the monochrome and polychrome cards
+    respectively. The book desribed them as "A" and "B" so I've marked those at
+    the top right.
+    * The little joker has the ASCII character associated with 85: "U", the big
+    joker has the ASCII character for 86: "V", both marked at top left.
+    * *Both* jokers specifically have the same card number though: 53, marked at
+    bottom right
+* By marking the cards with ASCII characters, one can use print statements in
+the software to display the order it has shuffled the pack to at various points.
+The plain text "test" with no password sees the pack finish with "&" on top,
+followed by "U", "S", "$", and "%": the 6 of Diamonds, the small joker, the
+Queen of Clubs, the 4 of Diamonds, and 5 of Diamonds.
+```
+$ echo "test" | ./pontifex.php
+b4 !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUV
+aft "#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUV!
+c 4
+aft SU!V"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRT
+c 49
+aft %&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRTU"#VS$!
+c 10
+aft #S$V%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRT!U"
+c 53
+Recurse
+aft ,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRT!"U#S$%V'()*+&
+c 24
+aft &US$%'(V,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRT!")*+#
+c 8
+XBCRF
+$
+```
 
 
 
